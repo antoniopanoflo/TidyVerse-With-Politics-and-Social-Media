@@ -1,0 +1,66 @@
+```
+#Reading in the data!
+social_media = read_csv("Data Set/appendix csvs/Social media statistics for members of the 116th Congress.csv")
+engagement_events = read_csv("Data Set/appendix csvs/Top 10 events associated with increased engagement in each party.csv")
+terms_by_party = read_csv("Data Set/appendix csvs/Top 100 terms used most exclusively by members of each party.csv")
+engagement_terms = read_csv("Data Set/appendix csvs/Top 100 terms associated with engagement boosts in each party.csv")
+```
+
+```
+#Which terms have consistently ranked engagement for four or more years?
+FirstQ <- engagement_terms%>%
+  group_by(Term) %>%
+  summarise(
+    count = n(),
+    .groups = "keep"
+  )
+#Also could've used: table(Top100TermsAssociatedEngagement$Term)
+
+GreaterThan3 <- filter(FirstQ, count >= 4)
+
+#This provides full table with more than 3 years of engagement:
+Desired <- engagement_terms[engagement_terms$Term %in% GreaterThan3$Term,]
+
+ggplot(Desired, aes(Term,fill = Party)) + geom_bar() + theme_bw() + scale_fill_manual("Party", values = c("D" = "dodgerblue1", "R" = "brown1"))
+```
+
+
+```
+#Does having more accounts mean having more average retweets/shares?
+#It is important to note that much more politicians have ONE twitter account as opposed to TWO accounts!
+
+testingFacebook <- filter(social_media, Platform == "facebook")
+testingTwitter <- filter(social_media, Platform == "twitter")
+
+FB <- aggregate(testingFacebook$`Average Post Retweets/Shares`~testingFacebook$`Number of Active Accounts`, testingFacebook, mean) %>%
+  rename("NumAccounts" = "testingFacebook$`Number of Active Accounts`" , "MeanNumAccounts" = "testingFacebook$`Average Post Retweets/Shares`")
+FB$Network <- "Facebook"
+
+TW <- aggregate(testingTwitter$`Average Post Retweets/Shares`~testingTwitter$`Number of Active Accounts`, testingTwitter, mean) %>%
+  rename("NumAccounts" = "testingTwitter$`Number of Active Accounts`" , "MeanNumAccounts" = "testingTwitter$`Average Post Retweets/Shares`")
+TW$Network <- "Twitter"
+
+FBTW <- rbind(TW,FB, by = c("NumAccounts", "MeanNumAccounts", "Network"))
+
+FBTW <- FBTW[-c(7),]
+
+ggplot(FBTW, aes(x=NumAccounts, y=as.numeric(MeanNumAccounts), fill = Network)) + 
+  geom_bar(stat = "identity", position= "dodge") +
+  scale_fill_manual("Social Network", values = c("Facebook" = "dodgerblue4", "Twitter" = "dodgerblue1")) + labs(x= "Number of Accounts", y= "Average Shares/Retweets" ) + theme_bw()
+```
+
+
+```
+#At this point, we want to compare the averages of each platform.
+
+NewNetwork <- tibble(
+  means = c(mean(FB$MeanNumAccounts), mean(TW$MeanNumAccounts)),
+  social = c("Facebook", "Twitter")
+)
+
+ggplot(NewNetwork, aes(x = means, y = social, fill = social)) + 
+  geom_bar(stat = "identity") +
+  scale_fill_manual("Social Network", values = c("Facebook" = "dodgerblue4", "Twitter" = "dodgerblue1")) + labs(x= "Mean of Shares/Retweets", y= "Social Network" ) + theme_bw()
+ 
+ #In the end, we see that if a politician wants a platform that might "spread the word" about them, it is vital to use Twitter.
+```
