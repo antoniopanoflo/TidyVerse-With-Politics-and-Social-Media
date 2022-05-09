@@ -1,3 +1,12 @@
+---
+title: "CDC"
+author: "Antonio Pano Flores"
+date: ""
+output:
+  html_document: default
+  pdf_document: default
+---
+
 ```
 #Reading in the data!
 social_media = read_csv("Data Set/appendix csvs/Social media statistics for members of the 116th Congress.csv")
