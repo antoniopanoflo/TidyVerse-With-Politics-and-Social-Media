@@ -11,16 +11,10 @@ output:
 options(scipen=999)
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-library(rvest)
-library(maps)
-library(caTools)
-library(ROCR)
-library(stringr)
 ```
 
-
-```
 #Reading in the data
+```
 social_media = read_csv("Data Set/appendix csvs/Social media statistics for members of the 116th Congress.csv")
 engagement_events = read_csv("Data Set/appendix csvs/Top 10 events associated with increased engagement in each party.csv")
 terms_by_party = read_csv("Data Set/appendix csvs/Top 100 terms used most exclusively by members of each party.csv")
