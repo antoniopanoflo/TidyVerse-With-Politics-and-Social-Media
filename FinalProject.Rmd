@@ -2,9 +2,7 @@
 title: "CDC"
 author: "Antonio Pano Flores"
 date: ""
-output:
-  html_document: default
-  pdf_document: default
+output: html_document
 ---
 
 ```{r setup, include=F}
