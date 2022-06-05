@@ -7,6 +7,11 @@ output:
   pdf_document: default
 ---
 
+```{r setup, include=F}
+options(scipen=999)
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
 
 #Reading in the data
 ```
