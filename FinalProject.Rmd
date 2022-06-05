@@ -7,11 +7,6 @@ output:
   pdf_document: default
 ---
 
-```{r setup, include=T}
-options(scipen=999)
-knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
-```
 
 #Reading in the data
 ```
@@ -79,3 +74,6 @@ ggplot(NewNetwork, aes(x = means, y = social, fill = social)) +
  
  #In the end, we see that if a politician wants a platform that might "spread the word" about them, it is vital to use Twitter.
 ```
+
+
+
